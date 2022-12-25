@@ -140,16 +140,17 @@ async function consturctServer(moduleDefs) {
    */
   app.use((req, res, next) => {
     if (req.path !== '/' && !req.path.includes('.')) {
-      if (["https://love.uyoahz.cn", "https://uyoahz.cn", "http://localhost:10086"].includes(req.headers.origin.toLowerCase())) {
-        //设置允许跨域的域名，*代表允许任意域名跨域
-        res.header("Access-Control-Allow-Origin", req.headers.origin);
-      }
+
       res.set({
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
         'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
         'Content-Type': 'application/json; charset=utf-8',
       })
+      if (["https://love.uyoahz.cn", "https://uyoahz.cn", "http://localhost:10086"].includes(req.headers.origin.toLowerCase())) {
+        //设置允许跨域的域名，*代表允许任意域名跨域
+        res.set({ "Access-Control-Allow-Origin": req.headers.origin });
+      }
     }
     req.method === 'OPTIONS' ? res.status(204).end() : next()
   })
